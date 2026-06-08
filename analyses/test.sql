@@ -1,3 +1,3 @@
 
 
-{{ audit_helper.compare_relations( source('eth', 'contracts'), source('eth', 'contracts_clone'))}}
+{{ codegen.generate_model_yaml(model_names = ["fct_stablecoin_activity_per_day"]) }}
