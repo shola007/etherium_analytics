@@ -1,15 +1,14 @@
 {{
   config(
-    tags = ['stablecoin'],
+    tags = ['stablecoin'], grants = {'+select' : ['TESTER']}
     )
 }}
 select
 
     t.date,
-    t.token_address,
-    s.symbol,
     s.type,
     {{ conversion('t.value', 's.decimals') }} as total_daily_value
+    
     
 
 from
@@ -24,6 +23,4 @@ where s.contract_address is not null
 
 group by 
 t.date,
-t.token_address,
-s.type,
-s.symbol
+s.type
