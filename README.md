@@ -1,15 +1,41 @@
-Welcome to your new dbt project!
+Business Problem
 
-### Using the starter project
+Organizations need scalable ways to analyze large blockchain datasets for transaction monitoring, smart contract activity analysis, and token movement insights.
 
-Try running the following commands:
-- dbt run
-- dbt test
+Architecture
 
+AWS Public Ethereum Dataset
+            |
+            v
+       Snowflake
+            |
+            v
+      dbt Staging
+            |
+            v
+     dbt Intermediate
+            |
+            v
+      dbt Marts
+            |
+            v
+     Analytics Layer
+            |
+            v
+      Reporting / BI
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+Key Features:
+
+Incremental models
+dbt tests
+Data quality checks
+CI/CD pipeline
+Production deployment workflow
+Analytics-ready marts
+
+Business Questions Answered:
+
+What are transaction trends over time?
+Which contracts generate the most activity?
+Which tokens have the highest transfer volume?
+How does blockchain activity change across periods?
