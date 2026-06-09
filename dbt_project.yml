@@ -26,6 +26,8 @@ seeds:
   +database: seeds
   +schema: static
 
+tests:
+  +schema: null
 
 
 models:
