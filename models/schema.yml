@@ -1,6 +1,22 @@
 version: 2
 
 models:
+
+    - name: stg_token_transfers
+      columns:
+       - name: transaction_hash
+         data_tests:
+          - relationships:
+              to: ref('stg_transactions')
+              field: hash
+
+    - name: int_transactions_enriched
+      columns:
+       - name: value
+         data_tests:
+          - assert_value_amount_not_negative:
+              field: block_number
+         
     - name: stg_transactions
       description: Transactions in the Ethereum Blockchain
       columns:
@@ -10,6 +26,14 @@ models:
          data_tests:
           - unique
           - not_null
+          - relationships:
+              to: ref('stg_token_transfers')
+              field: transaction_hash
+              severity: warn
+              config:
+                store_failures: true
+                store_failures_as: table
+                where: date > current_date - 25
 
     - name: fct_stablecoin_activity_per_day
       latest_version: 2
@@ -33,6 +57,9 @@ models:
       - name: type
         data_type: varchar
         description: ""
+        data_tests:
+          - accepted_values:
+              values: ['Hybrid', 'Crypto-backed', 'Fiat-backed']
 
       - name: total_daily_value
         data_type: float
@@ -47,3 +74,24 @@ models:
           # This means: use the 'columns' list from above, but exclude country_name
           - include: all
             exclude: [token_address, symbol]
+
+
+unit_tests:
+  - name: test_is_valid_transaction_category_breakdown
+    model: int_transactions_enriched
+    overrides:
+      macros:
+        # unit test this model in "full refresh" mode
+        is_incremental: false 
+    given:
+      - input: ref('stg_transactions')
+        rows:
+          - {receipt_contract_address: 'bla'}
+
+      - input: ref('stg_token_transfers')
+        rows:
+          - {transaction_hash: 'bla'}
+
+    expect:
+      rows:
+        - {transaction_category: 'contract_creation'}
