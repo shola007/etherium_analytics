@@ -7,7 +7,7 @@ select
     date,
     transaction_category,
     count(*) as transactions_count,
-    {{ conversion('value', '18') }} as total_value
+    {{ conversion('value', '18') }} as total_value_etherium
 
 from
 
