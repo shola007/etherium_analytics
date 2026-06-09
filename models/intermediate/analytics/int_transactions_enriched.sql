@@ -3,6 +3,7 @@
       config(
         materialized = 'incremental',
         incremental_strategy = 'append',
+        on_schema_change = 'append_new_columns',
         )
     
 }}
@@ -30,7 +31,7 @@ select
     t.receipt_contract_address,
     t.input,
     tt.token_transfers_count,
-    '1 as new_field',
+    1 as new_field,
 case
     when t.receipt_contract_address != '' then 'contract_creation'
     when tt.transaction_hash is not null then 'token_transfer'
