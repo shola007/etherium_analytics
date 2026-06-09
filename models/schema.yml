@@ -1,6 +1,22 @@
 version: 2
 
 models:
+
+    - name: stg_token_transfers
+      columns:
+       - name: transaction_hash
+         data_tests:
+          - relationships:
+              to: ref('stg_transactions')
+              field: hash
+
+    - name: int_transactions_enriched
+      columns:
+       - name: value
+         data_tests:
+          - assert_value_amount_not_negative:
+              field: block_number
+         
     - name: stg_transactions
       description: Transactions in the Ethereum Blockchain
       columns:
@@ -10,6 +26,9 @@ models:
          data_tests:
           - unique
           - not_null
+          - relationships:
+              to: ref('stg_token_transfers')
+              field: transaction_hash
 
     - name: fct_stablecoin_activity_per_day
       latest_version: 2
@@ -33,6 +52,9 @@ models:
       - name: type
         data_type: varchar
         description: ""
+        data_tests:
+          - accepted_values:
+              values: ['Hybrid', 'Crypto-backed', 'Fiat-backed']
 
       - name: total_daily_value
         data_type: float
