@@ -2,7 +2,7 @@
 {% docs  transactions %}
 
 # docs
-- go
-- here
+- This is the staging transaction models
+
 
 {% enddocs %}
